@@ -2,8 +2,8 @@
 
 # City Explorer
 
-**Author**: Chris Cummings and Darrik Puetz
-**Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
+**Author**: Chris Cummings,Darrik Puetz & Chris "Chedda" Ceder
+**Version**: 1.0.1 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
@@ -41,13 +41,31 @@ Version 1.0.0
         Added get functions for retrieving JSON data
         Added if statement to check for correct city input
 
+## Day One
 
-## Number and name of feature: Complete User Acceptance Tests
+### Number and name of feature: Complete User Acceptance Tests
 
-## Estimate of time needed to complete: 4hrs
+### Estimate of time needed to complete: 4hrs
 
-## Start time: 9:05am
+### Start time: 9:05am
 
-## Finish time: 11:15am
+### Finish time: 11:15am
 
-## Actual time needed to complete: 2hrs 10min
+### Actual time needed to complete: 2hrs 10min
+
+## Day Two
+
+### Number and name of feature: Using APIs
+
+### Estimate of time needed to complete: 4hrs
+
+### Start time: 9:10am
+
+### Finish time: 12:44am
+
+### Actual time needed to complete: 3hrs 34min
+Version 1.0.1
+    Branch lab07
+        Data Formatting( Using APIs instead of json)
+        Displaying APIs for weather using key
+        Displaying APIs for EventBrite using key
