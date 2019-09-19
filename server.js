@@ -7,8 +7,8 @@ const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 const pg = require('pg');
 app.use(cors());
-const client = new pg.Client(process.env.DATABASE_URL);
 require('dotenv').config();
+const client = new pg.Client(process.env.DATABASE_URL);
 app.use(express.static('public'));
 
 
@@ -67,6 +67,7 @@ app.get('/location', (request, response) => {
   let sqlQuery = `SELECT * FROM locations WHERE search_query='${searchQuery}'`;
   client.query(sqlQuery)
     .then(queryResult => {
+      console.log(queryResult);
       if (queryResult.rowCount > 0) {
         response.send(queryResult.rows[0])
       }
@@ -79,7 +80,7 @@ app.get('/location', (request, response) => {
             let sql = `INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4);`
             let values = [searchQuery, locations.formattedQuery, lat, lng];
             client.query(sql, values)
-              .catch(error => errHandler(error));
+              .catch(error => errHandler(error, response));
             response.send(locations);
           })
       }
@@ -133,7 +134,5 @@ function errHandler(error, response) {
 app.use('*', (request, response) => response.status(404).send('Location does not exist pal'));
 
 client.connect()
-  .then(() => {
-    app.listen(PORT, () => console.log(`listening on ${PORT}`));
-  })
-  .catch(error => errHandler(error));
+
+app.listen(PORT, () => console.log(`listening on ${PORT}`));
