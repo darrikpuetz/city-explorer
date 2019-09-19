@@ -2,7 +2,7 @@
 
 # City Explorer
 
-**Author**: Chris Cummings,Darrik Puetz & Chris "Chedda" Ceder
+**Author**: Chris Cummings,Darrik Puetz & Chris "Chedda" Ceder, Biniam Tesfamariam, Enrique rivera
 **Version**: 1.0.1 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
@@ -53,6 +53,9 @@ Version 1.0.0
 
 ### Actual time needed to complete: 2hrs 10min
 
+
+
+
 ## Day Two
 
 ### Number and name of feature: Using APIs
@@ -69,3 +72,48 @@ Version 1.0.1
         Data Formatting( Using APIs instead of json)
         Displaying APIs for weather using key
         Displaying APIs for EventBrite using key
+
+
+## Day four
+
+### Number and name of feature: Database
+
+### Estimate of time needed to complete: 1 hour
+
+### Start time: 9:29 am
+
+### Finish time: 10:00 am
+
+### Actual time needed to complete:  31 min
+Version 1.0.1
+    Branch lab07
+        Data Formatting( Using APIs instead of json)
+        Displaying APIs for weather using key
+        Displaying APIs for EventBrite using key
+
+## Day four
+
+### Number and name of feature: Server
+
+### Estimate of time needed to complete: 2 hour
+
+### Start time: 10:05 am
+
+### Finish time: 12:20 am
+
+### Actual time needed to complete:  2:15 hours
+
+
+
+
+## Day four
+
+### Number and name of feature: Deploy
+
+### Estimate of time needed to complete: 20 min
+
+### Start time: 1:30 pm
+
+### Finish time: 1:20 pm
+
+### Actual time needed to complete:  2:15 hours
