@@ -1,30 +1,39 @@
 'use strict'
 
 const express = require('express');
-require('dotenv').config();
-
+const superagent = require('superagent');
 const app = express();
+const cors = require('cors');
+const PORT = process.env.PORT || 3000;
+const pg = require('pg');
+app.use(cors());
+const client = new pg.Client(process.env.DATABASE_URL);
+require('dotenv').config();
 app.use(express.static('public'));
 
-const superagent = require('superagent');
 
-const cors = require('cors');
-app.use(cors());
+let lat = 0;
+let lng = 0;
 
-const PORT = process.env.PORT || 3000;
+
 
 function Locations(searchQuery, geoDataResults) {
   this.searchQuery = searchQuery;
   this.formattedQuery = geoDataResults.formatted_address;
   this.latitude = geoDataResults.geometry.location.lat;
   this.longitude = geoDataResults.geometry.location.lng;
+  lat = this.latitude;
+  lng = this.longitude;
+
 }
+
 
 function Weather(whichDay) {
   this.forecast = whichDay.summary;
-  this.time = new Date(whichDay.time*1000).toDateString();
+  this.time = new Date(whichDay.time * 1000).toDateString();
   console.log(this);
 }
+
 
 function Event(eventBriteStuff) {
   this.link = eventBriteStuff.url;
@@ -33,21 +42,53 @@ function Event(eventBriteStuff) {
   this.summary = eventBriteStuff.summary;
 }
 
+
 app.get('/location', (request, response) => {
   try {
     let searchQuery = request.query.data;
-    let geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GOOGLE_API_KEY}`;
+    let geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GEOCODE_API_KEY}`;
     //SuperAgent Things Here
     superagent.get(geocodeUrl)
       .then((geocodeUrlStuff) => {
         const locations = new Locations(searchQuery, geocodeUrlStuff.body.results[0]);
         console.log(locations);
         response.send(locations);
+
       })
+
   } catch (error) {
     errHandler(error, response);
   }
 });
+
+
+app.get('/location', (request, response) => {
+  let searchQuery = request.query.data;
+  let sqlQuery = `SELECT * FROM locations WHERE search_query='${searchQuery}'`;
+  client.query(sqlQuery)
+    .then(queryResult => {
+      if (queryResult.rowCount > 0) {
+        response.send(queryResult.rows[0])
+      }
+      else {
+        let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GEOCODE_API_KEY}`
+        superagent.get(url)
+          .then(superagentResults => {
+            let results = superagentResults.body.results[0];
+            let locations = new Locations(searchQuery, results);
+            let sql = `INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4);`
+            let values = [searchQuery, locations.formattedQuery, lat, lng];
+            client.query(sql, values)
+              .catch(error => errHandler(error));
+            response.send(locations);
+          })
+      }
+    })
+    .catch(err => errHandler(err, response));
+})
+
+
+
 
 //Weather query from Dark Sky
 app.get('/weather', (request, response) => {
@@ -90,4 +131,9 @@ function errHandler(error, response) {
   response.status(500).send(error);
 }
 app.use('*', (request, response) => response.status(404).send('Location does not exist pal'));
-app.listen(PORT, () => console.log(`listening on ${ PORT }`));
+
+client.connect()
+  .then(() => {
+    app.listen(PORT, () => console.log(`listening on ${PORT}`));
+  })
+  .catch(error => errHandler(error));
