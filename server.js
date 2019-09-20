@@ -44,25 +44,6 @@ function Event(eventBriteStuff) {
 
 
 app.get('/location', (request, response) => {
-  try {
-    let searchQuery = request.query.data;
-    let geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GEOCODE_API_KEY}`;
-    //SuperAgent Things Here
-    superagent.get(geocodeUrl)
-      .then((geocodeUrlStuff) => {
-        const locations = new Locations(searchQuery, geocodeUrlStuff.body.results[0]);
-        console.log(locations);
-        response.send(locations);
-
-      })
-
-  } catch (error) {
-    errHandler(error, response);
-  }
-});
-
-
-app.get('/location', (request, response) => {
   let searchQuery = request.query.data;
   let sqlQuery = `SELECT * FROM locations WHERE search_query='${searchQuery}'`;
   client.query(sqlQuery)
@@ -70,19 +51,25 @@ app.get('/location', (request, response) => {
       console.log(queryResult);
       if (queryResult.rowCount > 0) {
         response.send(queryResult.rows[0])
+        console.log('got info from database');
       }
       else {
+        console.log('Making an API call');
         let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GEOCODE_API_KEY}`
         superagent.get(url)
           .then(superagentResults => {
             let results = superagentResults.body.results[0];
             let locations = new Locations(searchQuery, results);
+
             let sql = `INSERT INTO locations (search_query, formatted_query, latitude, longitude) VALUES ($1, $2, $3, $4);`
             let values = [searchQuery, locations.formattedQuery, lat, lng];
-            client.query(sql, values)
+            console.log(values)
+            client.query(sql, values).then(queryInfo => {
+              console.log('Inserted info completed');
+            })
               .catch(error => errHandler(error, response));
             response.send(locations);
-          })
+          });
       }
     })
     .catch(err => errHandler(err, response));
