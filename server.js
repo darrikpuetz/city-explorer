@@ -31,7 +31,7 @@ function Locations(searchQuery, geoDataResults) {
 function Weather(whichDay) {
   this.forecast = whichDay.summary;
   this.time = new Date(whichDay.time * 1000).toDateString();
-  console.log(this);
+  // console.log(this);
 }
 
 
@@ -42,19 +42,33 @@ function Event(eventBriteStuff) {
   this.summary = eventBriteStuff.summary;
 }
 
+function Restaurants(restaurantQuery) {
+  this.name = restaurantQuery.name;
+  this.image_url = restaurantQuery.image_url;
+  this.price = restaurantQuery.price;
+  this.rating = restaurantQuery.rating;
+  this.url = restaurantQuery.url;
+ }
+
+// getting hit by frontend 
 
 app.get('/location', (request, response) => {
+  
   let searchQuery = request.query.data;
-  let sqlQuery = `SELECT * FROM locations WHERE search_query='${searchQuery}'`;
-  client.query(sqlQuery)
+  let sqlQuery = `SELECT * FROM locations WHERE search_query=$1`;
+  
+  // console.log(sqlQuery);
+  // console.log(queryResults);
+  
+  client.query(sqlQuery, [searchQuery])
     .then(queryResult => {
-      console.log(queryResult);
+      // console.log(queryResult);
       if (queryResult.rowCount > 0) {
         response.send(queryResult.rows[0])
         console.log('got info from database');
       }
       else {
-        console.log('Making an API call');
+        console.log('Making an google API call');
         let url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GEOCODE_API_KEY}`
         superagent.get(url)
           .then(superagentResults => {
@@ -77,20 +91,24 @@ app.get('/location', (request, response) => {
 
 
 
-
 //Weather query from Dark Sky
 app.get('/weather', (request, response) => {
-  try {
-    let darkSkyURL = `https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${request.query.data.latitude},${request.query.data.longitude}`;
-    superagent.get(darkSkyURL)
-      .end((error, darkSkyURLStuff) => {
-        const currentWeather = makeWeather(darkSkyURLStuff.body);
-        response.status(200).send(currentWeather);
-      })
-  } catch (error) {
+  
+  let darkSkyURL = `https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${request.query.data.latitude},${request.query.data.longitude}`;
+  // console.log(darkSkyUrl);
+
+  superagent.get(darkSkyURL).then(responseFromDarkSky => {
+
+    const currentWeather = makeWeather(darkSkyURLStuff.body);
+      response.status(200).send(currentWeather);
+    }
+
+  ) .catch (error => {
     errHandler(error, response);
-  }
-});
+    }); // catch 
+  
+  );
+
 
 app.get('/events', (request, response) => {
   try {
@@ -105,19 +123,46 @@ app.get('/events', (request, response) => {
   }
 });
 
+
+
+ app.listen(PORT, () => console.log(listening on ${PORT}));
+ function getRestaurants(restMap) {
+  let restInput = restMap.map(newEatery => new Restaurants(newEatery));
+  return restInput.splice(0, 20);
+ }
+
+ app.get('/yelp', (request, response) => {
+  try {
+    let restuarantURL = https://api.yelp.com/v3/transactions/delivery/search?latitude=${request.query.data.latitude}&longitude=${request.query.data.longitude}
+    superagent.get(restuarantURL)
+      .then((restaurantData) => {
+        const restaurantInfo = getEvents(restaurantData.body.events);
+        response.send(restaurantInfo);
+      });
+  } catch (error) {
+    errHandler(error, response);
+  }
+ });
+
+
+
 function makeWeather(weatherText) {
   return weatherText.daily.data.map(day => new Weather(day));
 }
+
 
 function getEvents(eventMap) {
   let eventInput = eventMap.map(event => new Event(event));
   return eventInput.splice(0, 20);
 }
 
+
 function errHandler(error, response) {
   console.error(error);
   response.status(500).send(error);
 }
+
+
 app.use('*', (request, response) => response.status(404).send('Location does not exist pal'));
 
 client.connect()
