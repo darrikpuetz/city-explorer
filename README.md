@@ -117,3 +117,14 @@ Version 1.0.1
 ### Finish time: 1:20 pm
 
 ### Actual time needed to complete:  2:15 hours
+
+
+Number and name of feature: Adding movie 
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 10:00 am
+
+Finish time: _____
+
+Actual time needed to complete: _____

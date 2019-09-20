@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS city_database;
 
 CREATE TABLE IF NOT EXISTS locations(
 
@@ -6,7 +5,7 @@ CREATE TABLE IF NOT EXISTS locations(
     search_query VARCHAR(255),
     formatted_query VARCHAR(255),
     latitude NUMERIC(10,7),
-    longtitude NUMERIC(10,7)
+    longitude NUMERIC(10,7)
 
 );
 

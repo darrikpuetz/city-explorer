@@ -44,25 +44,6 @@ function Event(eventBriteStuff) {
 
 
 app.get('/location', (request, response) => {
-  try {
-    let searchQuery = request.query.data;
-    let geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchQuery}&key=${process.env.GEOCODE_API_KEY}`;
-    //SuperAgent Things Here
-    superagent.get(geocodeUrl)
-      .then((geocodeUrlStuff) => {
-        const locations = new Locations(searchQuery, geocodeUrlStuff.body.results[0]);
-        console.log(locations);
-        response.send(locations);
-
-      })
-
-  } catch (error) {
-    errHandler(error, response);
-  }
-});
-
-
-app.get('/location', (request, response) => {
   let searchQuery = request.query.data;
   let sqlQuery = `SELECT * FROM locations WHERE search_query='${searchQuery}'`;
   client.query(sqlQuery)
@@ -131,8 +112,9 @@ function errHandler(error, response) {
   console.error(error);
   response.status(500).send(error);
 }
-app.use('*', (request, response) => response.status(404).send('Location does not exist pal'));
 
 client.connect()
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
+
+app.use('*', (request, response) => response.status(404).send('Sorry this location does not exist'));
