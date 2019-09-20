@@ -17,6 +17,7 @@ let lng = 0;
 
 
 
+
 function Locations(searchQuery, geoDataResults) {
   this.searchQuery = searchQuery;
   this.formattedQuery = geoDataResults.formatted_address;
