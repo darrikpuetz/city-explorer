@@ -2,8 +2,9 @@
 
 # City Explorer
 
-**Author**: Chris Cummings,Darrik Puetz & Chris "Chedda" Ceder, Biniam Tesfamariam, Enrique rivera
-**Version**: 1.0.1 (increment the patch/fix version number if you make more commits past your first submission)
+**Author**: Chris Cummings,Darrik Puetz & Chris "Chedda" Ceder, Biniam Tesfamariam, Enrique Rivera, Steve Rocketkar
+
+**Version**: 1.0.2 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
@@ -28,12 +29,10 @@ APIs needed:
     Hiking Project
 
 ## Change Log
-<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
+<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples: -->
 
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource.
 
-## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 Version 1.0.0
     Branch lab06
         Created server
@@ -41,7 +40,29 @@ Version 1.0.0
         Added get functions for retrieving JSON data
         Added if statement to check for correct city input
 
+
+Version 1.0.1
+    Branch lab07
+        Data Formatting( Using APIs instead of json)
+        Displaying APIs for weather using key
+        Displaying APIs for EventBrite using key
+
+Version 1.0.2
+    Branch lab08
+
+Version 1.0.3
+    Branch lab08
+
+Version 1.0.4
+    Branch lab09
+        
+
+## Credits and Collaborations
+<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+
+------
 ## Day One
+------
 
 ### Number and name of feature: Complete User Acceptance Tests
 
@@ -54,9 +75,9 @@ Version 1.0.0
 ### Actual time needed to complete: 2hrs 10min
 
 
-
-
+------
 ## Day Two
+------
 
 ### Number and name of feature: Using APIs
 
@@ -66,15 +87,11 @@ Version 1.0.0
 
 ### Finish time: 12:44am
 
-### Actual time needed to complete: 3hrs 34min
-Version 1.0.1
-    Branch lab07
-        Data Formatting( Using APIs instead of json)
-        Displaying APIs for weather using key
-        Displaying APIs for EventBrite using key
 
+------
+## Day Three
+------
 
-## Day four
 
 ### Number and name of feature: Database
 
@@ -85,13 +102,12 @@ Version 1.0.1
 ### Finish time: 10:00 am
 
 ### Actual time needed to complete:  31 min
-Version 1.0.1
-    Branch lab07
-        Data Formatting( Using APIs instead of json)
-        Displaying APIs for weather using key
-        Displaying APIs for EventBrite using key
 
+
+------
 ## Day four
+------
+
 
 ### Number and name of feature: Server
 
@@ -103,17 +119,42 @@ Version 1.0.1
 
 ### Actual time needed to complete:  2:15 hours
 
+------
+## Day five
+------
 
 
+### Number and name of feature: Integrate Yelp API
 
-## Day four
+### Estimate of time needed to complete: 30 min
 
-### Number and name of feature: Deploy
+### Start time: 9:30 am
 
-### Estimate of time needed to complete: 20 min
+### Finish time: not
 
-### Start time: 1:30 pm
+### Actual time needed to complete:  
 
-### Finish time: 1:20 pm
+------
 
-### Actual time needed to complete:  2:15 hours
+### Number and name of feature: Integrate Movie DB
+
+### Estimate of time needed to complete: 30 min
+
+### Start time: 
+
+### Finish time: 
+
+### Actual time needed to complete:  
+
+------
+
+### Number and name of feature: Refactor code
+
+### Estimate of time needed to complete: 2 hours
+
+### Start time: not
+
+### Finish time: 
+
+### Actual time needed to complete: 
+
