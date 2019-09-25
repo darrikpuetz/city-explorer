@@ -8,6 +8,7 @@ const cors = require('cors');
 const superagent = require('superagent');
 const pg = require('pg');
 const PORT = process.env.PORT || 3000;
+const yelp = require('yelp-fusion');
 let lat = 0;
 let lng = 0;
 let currentCity = '';
@@ -123,7 +124,7 @@ function superagentWeather(url, searchQuery, response){
     })
     .catch(err =>{
       errHandler(err, response);
-    })
+    });
 }
 
 function newWeather(superagentResults, searchQuery){
@@ -185,16 +186,18 @@ function newMovie(superagentResults){
 
 function errHandler(error, response) {
   console.log(error);
-  const errorObj = {
-    status: 500,
-    text: 'An error with the database has occurred. Please try again.'
-  };
-  response.status(500).send(errorObj);
+  // const errorObj = {
+  //   status: 500,
+  //   text: 'An error with the database has occurred. Please try again.'
+  // };
+  // response.status(500).send(errorObj);
 }
 
 function getYelp(request, response){
 
   const apiKey = process.env.YELP_API_KEY;
+
+  const client2 = yelp.client(apiKey);
   
   const searchRequest = {
     term:'restaurant',
@@ -234,7 +237,7 @@ client.connect()
   })
   .catch(error => errHandler(error));
   
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
-  // application specific logging, throwing an error, or other logic here
-});
+// process.on('unhandledRejection', (reason, p) => {
+//   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+//   // application specific logging, throwing an error, or other logic here
+// });
