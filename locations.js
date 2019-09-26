@@ -3,6 +3,7 @@ function Locations(searchQuery, geoDataResults) {
   this.formattedQuery = geoDataResults.formatted_address;
   this.latitude = geoDataResults.geometry.location.lat;
   this.longitude = geoDataResults.geometry.location.lng;
+  console.log('made location with' + searchQuery);
 }
 
 
