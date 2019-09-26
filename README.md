@@ -152,7 +152,7 @@ Version 1.0.4
 
 ### Estimate of time needed to complete: 2 hours
 
-### Start time: not
+### Start time: 8am
 
 ### Finish time: 
 
