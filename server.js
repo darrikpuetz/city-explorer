@@ -13,25 +13,32 @@ let lat = 0;
 let lng = 0;
 let currentCity = '';
 app.use(cors());
+
 const DATABASE_URL = process.env.DATABASE_URL;
 const client = new pg.Client(DATABASE_URL);
 client.on('error', errHandler);
 
-function Locations(searchQuery, geoDataResults) {
-  this.searchQuery = searchQuery;
-  this.formattedQuery = geoDataResults.formatted_address;
-  this.latitude = geoDataResults.geometry.location.lat;
-  this.longitude = geoDataResults.geometry.location.lng;
-  lat = this.latitude;
-  lng = this.longitude;
-  currentCity = this.searchQuery;
-}
+
+// ---------- imports
+
+
+// do not fully grok this second line which seems to only be for constructor functions, gotten from https://stackabuse.com/how-to-use-module-exports-in-node-js/ but seems to work
+
+let locations = require('./locations.js');
+let Locations = locations.Locations;
+
+// let weathers = require('./weather.js');
+// let Weather = weathers.Weather;
+
+// let events = require('./event.js');
+// let Event = events.Event;
+
 
 
 function Weather(whichDay) {
   this.forecast = whichDay.summary;
   this.time = new Date(whichDay.time * 1000).toDateString();
-  console.log(this);
+  // console.log(this);
 }
 
 function Restaurant(yelpData){
@@ -91,9 +98,13 @@ function superagentGetLocation(url, searchQuery, response){
       response.send(locations);
     })
 }
+
 function newLocation(superagentResults, searchQuery){
   let results = superagentResults.body.results[0];
   let locations = new Locations(searchQuery, results);
+  lat = locations.latitude;
+  lng = locations.longitude;
+  currentCity = locations.searchQuery;
   return locations;
 }
 
@@ -106,10 +117,10 @@ function sendSQLLocation(searchQuery, locations){
     })
     .catch(error => errHandler(error));
 }
+``
 
-  
-  
-  
+
+
 //Weather query from Dark Sky
 function getWeather(request, response) {
   let searchQuery = request.query.data;
@@ -182,7 +193,7 @@ function newMovie(superagentResults){
   })
   return moviesArray;
 }
-  
+
 
 function errHandler(error, response) {
   console.log(error);
@@ -198,12 +209,12 @@ function getYelp(request, response){
   const apiKey = process.env.YELP_API_KEY;
 
   const client2 = yelp.client(apiKey);
-  
+
   const searchRequest = {
     term:'restaurant',
     location: currentCity
   };
-  
+
   client2.search(searchRequest).then(yelpAPIResults => {
     response.send(newYelp(yelpAPIResults));
   }).catch(e => {
@@ -236,7 +247,7 @@ client.connect()
     app.listen(PORT, () => console.log(`listening on ${PORT}`));
   })
   .catch(error => errHandler(error));
-  
+
 // process.on('unhandledRejection', (reason, p) => {
 //   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
 //   // application specific logging, throwing an error, or other logic here
