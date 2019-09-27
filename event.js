@@ -5,7 +5,7 @@ function Event(eventObj) {
   this.event_date = new Date(eventObj.start.local).toString().slice(0,16);
   this.created = Date.now();
 
-  console.log(`made event ${this.name} at ${this.event_date} link:${this.link}`);
+  // console.log(`made event ${this.name} at ${this.event_date} link:${this.link}`);
 
 }
 

@@ -49,8 +49,8 @@ let Locations = locations.Locations;
 let weathers = require('./weather.js');
 let Weather = weathers.Weather;
 
-// let events = require('./event.js');
-// let Event = events.Event;
+let events = require('./event.js');
+let Event = events.Event;
 
 
 // ------------ routes ------------
@@ -64,8 +64,8 @@ app.get('/events', getEvents);
 app.use('*', (request, response) => response.status(404).send('Location does not exist pal'));
 
 
-// ---------- get/check/make location ------------
 
+// ---------- get/check/make location ------------
 
 function newLocationCheck (request, response) {
   let searchQuery = request.query.data;
@@ -121,6 +121,7 @@ function sendSQLLocation(searchQuery, locations){
 }
 
 
+
 // ---------- get location from darkSky
 
 function getWeather(request, response) {
@@ -145,28 +146,23 @@ function getWeather(request, response) {
 // ----- events! -----
 
 function getEvents(request, response){
-  let url = `https://www.eventbriteapi.com/v3/events/search?location.longitude=${lng}&location.latitude=${lat}&expand=venue&token=${process.env.EVENT_API_KEY}`
-  superagentEvent(url, response)
-}
 
-function superagentEvent(url, response){
+  let url = `https://www.eventbriteapi.com/v3/events/search?location.longitude=${lng}&location.latitude=${lat}&expand=venue&token=${process.env.EVENT_API_KEY}`
+
   superagent.get(url)
-    .then(superagentResults => {
-      response.status(200).send(newEvent(superagentResults));
+    .then(results => {
+      let eventsObj = results.body.events.map(anEventObj => {
+        return new Event(anEventObj);
+      });
+
+      response.send(eventsObj);
     })
     .catch(err =>{
       errHandler(err, response);
     });
 }
 
-function newEvent(superagentResults){
-  const eventResults = superagentResults.body;
-  const eventsArray = eventResults.events.slice(0,10).map(event => {
-    let theEvent = new Events (event);
-    return theEvent;
-  });
-  return eventsArray;
-}
+
 
 function getMovies(request, response){
   let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&language=en-US&query=${currentCity}&page=1&include_adult=false`;
@@ -181,6 +177,7 @@ function superagentMovies(url, response){
     })
     .catch(error => console.log(error));
 }
+
 
 function newMovie(superagentResults){
   const movieResults = superagentResults.body;
@@ -232,26 +229,12 @@ function newYelp(yelpAPIResults){
 // ---------- constructors (being moved external) ------------
 
 
-// function Weather(whichDay) {
-//   this.forecast = whichDay.summary;
-//   this.time = new Date(whichDay.time * 1000).toDateString();
-//   // console.log(this);
-// }
-
 function Restaurant(yelpData){
   this.name = yelpData.name;
   this.image_url = yelpData.image_url;
   this.price = yelpData.price;
   this.rating = yelpData.rating;
   this.url = yelpData.url;
-}
-
-function Events(eventData) {
-  this.link = eventData.url;
-  this.name = eventData.name.text;
-  this.event_date = new Date(eventData.start.local).toDateString();
-  this.summary = eventData.summary;
-
 }
 
 function Movie(movieData){
