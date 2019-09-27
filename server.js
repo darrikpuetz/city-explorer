@@ -228,11 +228,6 @@ function newYelp(yelpAPIResults){
 
 // ---------- constructors (being moved external) ------------
 
-// function Weather(whichDay) {
-//   this.forecast = whichDay.summary;
-//   this.time = new Date(whichDay.time * 1000).toDateString();
-//   // console.log(this);
-// }
 
 function Restaurant(yelpData){
   this.name = yelpData.name;
@@ -241,14 +236,6 @@ function Restaurant(yelpData){
   this.rating = yelpData.rating;
   this.url = yelpData.url;
 }
-
-// function Events(eventData) {
-//   this.link = eventData.url;
-//   this.name = eventData.name.text;
-//   this.event_date = new Date(eventData.start.local).toDateString();
-//   this.summary = eventData.summary;
-
-// }
 
 function Movie(movieData){
   this.title = movieData.title;
