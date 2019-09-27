@@ -10,10 +10,6 @@ function Weather(day) {
   // console.log(`weather: ${this.forecast} at ${this.time}`);
 }
 
-Weather.prototype = {
-// TODO: Question: do render functions belong in here?
-}
-
 module.exports = {
   Weather: Weather
 };
