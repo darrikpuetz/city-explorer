@@ -46,8 +46,8 @@ client.connect()
 let locations = require('./locations.js');
 let Locations = locations.Locations;
 
-// let weathers = require('./weather.js');
-// let Weather = weathers.Weather;
+let weathers = require('./weather.js');
+let Weather = weathers.Weather;
 
 // let events = require('./event.js');
 // let Event = events.Event;
@@ -119,35 +119,30 @@ function sendSQLLocation(searchQuery, locations){
     })
     .catch(error => errHandler(error));
 }
-``
 
 
+// ---------- get location from darkSky
 
-//Weather query from Dark Sky
 function getWeather(request, response) {
-  let searchQuery = request.query.data;
-  console.log(searchQuery);
-  let url = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${lat},${lng}`
-  superagentWeather(url, searchQuery, response)
-}
-function superagentWeather(url, searchQuery, response){
-  superagent.get(url)
-    .then(superagentResults => {
-      response.status(200).send(newWeather(superagentResults, searchQuery));
+
+  let weatherUrl = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${lat},${lng}`;
+  // console.log('weather url:');
+  // console.log(weatherUrl);
+  superagent.get(weatherUrl)
+    .then(darkSkyObj => {
+
+      let localForecast = darkSkyObj.body.daily.data.map(day => new Weather(day));
+      response.send(localForecast);
+
     })
-    .catch(err =>{
-      errHandler(err, response);
+    .catch(error => {
+      errHandler(error, request, response)
     });
+
 }
 
-function newWeather(superagentResults, searchQuery){
-  const weatherDataResults = superagentResults.body;
-  let weatherArray = weatherDataResults.daily.data.map(day => {
-    const weather = new Weather(searchQuery, day);
-    return weather;
-  })
-  return weatherArray;
-}
+
+// ----- events! -----
 
 function getEvents(request, response){
   let url = `https://www.eventbriteapi.com/v3/events/search?location.longitude=${lng}&location.latitude=${lat}&expand=venue&token=${process.env.EVENT_API_KEY}`
@@ -237,11 +232,11 @@ function newYelp(yelpAPIResults){
 // ---------- constructors (being moved external) ------------
 
 
-function Weather(whichDay) {
-  this.forecast = whichDay.summary;
-  this.time = new Date(whichDay.time * 1000).toDateString();
-  // console.log(this);
-}
+// function Weather(whichDay) {
+//   this.forecast = whichDay.summary;
+//   this.time = new Date(whichDay.time * 1000).toDateString();
+//   // console.log(this);
+// }
 
 function Restaurant(yelpData){
   this.name = yelpData.name;
