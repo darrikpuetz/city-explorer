@@ -4,7 +4,7 @@
 
 **Author**: Chris Cummings,Darrik Puetz & Chris "Chedda" Ceder, Biniam Tesfamariam, Enrique Rivera, Steve Rocketkar
 
-**Version**: 1.0.2 (increment the patch/fix version number if you make more commits past your first submission)
+**Version**: 1.0.5 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
@@ -56,6 +56,9 @@ Version 1.0.3
 Version 1.0.4
     Branch lab09
         
+Version 1.0.5
+    Refactor! 
+
 
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
@@ -130,9 +133,9 @@ Version 1.0.4
 
 ### Start time: 9:30 am
 
-### Finish time: not
+### Finish time: 6pm like 2 days later
 
-### Actual time needed to complete:  
+### Actual time needed to complete:  5 hours
 
 ------
 
@@ -140,11 +143,11 @@ Version 1.0.4
 
 ### Estimate of time needed to complete: 30 min
 
-### Start time: 
+### Start time: 2pm next day
 
-### Finish time: 
+### Finish time: 730 am several days later
 
-### Actual time needed to complete:  
+### Actual time needed to complete:  4.5 hours
 
 ------
 
@@ -154,7 +157,7 @@ Version 1.0.4
 
 ### Start time: 8am
 
-### Finish time: 
+### Finish time: 9am next day
 
-### Actual time needed to complete: 
+### Actual time needed to complete: 3 hours 
 
